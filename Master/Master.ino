@@ -39,6 +39,7 @@ Servo RotShoulder;
 void setup() {
   Serial.begin(9600);
   Serial.println("Con");
+  ServoSetup();
   BT.begin(9600);
 
 }
@@ -46,15 +47,26 @@ void setup() {
 void ServoSetup()
 {
 Thumb.attach(2);
+Thumb.write(0);  
  Index.attach(3);
+ Index.write(0);
  Middle.attach(4);
+ Middle.write(0);
  Ring.attach(5);
+ Ring.write(0);
  Pinky.attach(6);
+ Pinky.write(0);
  Wrist.attach(7);
+ Wrist.write(90);
  Bicep.attach(8);
+  Bicep.write(0);
+
  RotBicep.attach(9);
+ RotBicep.write(90);
  RotShoulder.attach(10);
+ RotShoulder.write(30);
  Shoulder.attach(11);
+ Shoulder.write(35);
 }
 
 
@@ -72,7 +84,7 @@ void loop() {
       MainQueue.Clear();
         
     } else {
-      
+    
       MainQueue.Push(IncomingData);
     }
 
@@ -107,6 +119,7 @@ void ProcessPacket() {
   } else  // the sides match or the packet is for a central servo.
   {
     SetServos(pck.data[1],pck.data[2]);
+
     ServoDelay = millis() + 1000;
   }
 }
@@ -114,6 +127,10 @@ void ProcessPacket() {
 
 
 void SetServos(byte id, byte val) {
+
+  Serial.println(id);
+  Serial.println(val);
+  Serial.println("");
   switch (id) {
     case 84:
       Thumb.write(val);
